@@ -5,6 +5,8 @@ data segment
     pkey db "press any key...$"  
     array db 10 dup (?)
     i db ?
+    
+    b dw ?
 ends
 
 stack segment
@@ -33,9 +35,16 @@ start:
     ;div dl
     
     ;mov al, ah
-    ;div bl     
+    ;div bl 
     
-    mov ax, 0FFH 
+    mov b, 00H    
+    
+    
+    hexToOctal:
+    cmp b, 0FFH
+    je exit
+    
+    mov ax, b 
     mov dl, 8d  
     mov i, 0d  
     L1:
@@ -68,7 +77,7 @@ start:
     
     print:
     cmp i, 0d
-    je exit
+    je again
     pop cx
     mov dl, cl
     add dl, 48d
@@ -79,6 +88,21 @@ start:
     
     
     
+    printSpace:
+    mov dl, ' '
+    mov ah, 02h
+    int 21h
+    ;mov dl, 13
+    ;mov ah, 02h
+    ;int 21h
+    jmp a
+     
+     
+    again:
+    inc b
+    jmp printSpace
+    a:
+    jmp hexToOctal
     
     exit:
     mov ax, 4c00h ; exit to operating system.
