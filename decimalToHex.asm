@@ -3,7 +3,8 @@
 data segment
     ; add your data here!
     pkey db "press any key...$"
-    i db ?
+    i db ?  
+    b dw ?
 ends
 
 stack segment
@@ -17,8 +18,13 @@ start:
     mov ds, ax
     mov es, ax
 
-    ; add your code here           
-    mov ax, 15d
+    ; add your code here 
+             
+    mov b, 0d        
+     
+    decToHex:          
+    ;mov ax, 15d
+    mov ax, b
     mov dl, 16d
     mov i, 0d
     
@@ -48,7 +54,7 @@ start:
     
     print:
     cmp i, 0d
-    je exit
+    je takeAnotherInp
     
     pop cx
     
@@ -56,7 +62,7 @@ start:
     cmp dl, 0Ah
     jge printHexDigit  
     add dl, 48d
-    int 21h  
+    ;int 21h  
     again:
     mov ah, 2
     int 21h
@@ -68,7 +74,22 @@ start:
     
     printHexDigit:
     add dl, 55d
-    jmp again
+    jmp again  
+    
+    
+    takeAnotherInp:
+    call printSpace
+    a:
+    cmp b, 256d
+    je exit
+    inc b
+    jmp decToHex   
+    
+    printSpace:
+    mov dl, ' '
+    mov ah, 02h
+    int 21h
+    jmp a
             
     exit:
     mov ax, 4c00h ; exit to operating system.
