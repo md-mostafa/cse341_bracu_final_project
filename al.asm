@@ -364,8 +364,8 @@ start:
     mov i, 0d  
     L1:
     div dl              ;ah = 7, al = 1
-    cmp ah, 0h          ;cmp al, 0h
-    je print
+    ;cmp ah, 0h          ;cmp al, 0h
+    ;je print
     
     mov bh, 0h
     mov bl, al 
@@ -374,6 +374,9 @@ start:
     mov cl, ah
     push cx
     inc i 
+    
+    cmp al, 0h  
+    je print
     
     
     ;mov dl, al
