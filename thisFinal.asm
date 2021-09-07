@@ -7,8 +7,10 @@ data segment
     msg2 db "1.  Hex To Oct   $"
     msg3 db "2.  Oct To Hex   $"  
     
-    msg4 db "Enter a Hex Number : $"
-    msg5 db "Enter a Oct Number : $"
+    msg4 db "Enter a Hex Number (2digit) : $"
+    msg5 db "Enter a Oct Number (3digit) : $"    
+    
+    msg6 db "check another number ? ('y' or 'n')   : $"
     
     
     var1 db 100 dup('$')     
@@ -28,6 +30,7 @@ start:
     mov es, ax          
     
     
+    anotherNumber:
     lea dx, msg2
     mov ah, 09h
     int 21h    
@@ -437,7 +440,7 @@ start:
     
     print:
     cmp i, 0d
-    je exit
+    je anotherInp
     pop cx
     mov dl, cl
     add dl, 48d
@@ -565,6 +568,12 @@ start:
     cmp al, '7'
     je D773oh
     
+    D00oh:
+    mov dl, 64d
+    mov bl, 0d
+    mul bl
+    mov cl, al
+    jmp SecondDigitoh
     
     D11oh:
     mov al, 64d
@@ -616,12 +625,7 @@ start:
     mov cl, al
     jmp SecondDigitoh
     
-    D00oh:
-    mov dl, 64d
-    mov bl, 0d
-    mul bl
-    mov cl, al
-    jmp SecondDigitoh
+   
     
     
     
@@ -767,7 +771,7 @@ start:
     
     printoh:
     cmp i, 0d
-    je exit 
+    je anotherInp 
     
     pop cx    
     
@@ -785,7 +789,29 @@ start:
     
     printHexDigitoh:
     add  dl, 55d
-    jmp againoh
+    jmp againoh    
+    
+    
+    anotherInp: 
+    call printLine
+    call printLine
+     
+    lea dx, msg6
+    mov ah, 09h
+    int 21h  
+    
+    
+    
+    mov ah, 01h
+    int 21h
+    
+    cmp al, 'y'
+    call printLine
+    je anotherNumber
+    
+    cmp al, 'n'
+    call printLine
+    je exit
     
             
  
