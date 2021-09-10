@@ -2,9 +2,14 @@
 
 data segment
     ; add your data here!
-    pkey db "press any key...$"  
+    pkey db "press any key...$" 
+    msg0 db "Hex To Octal converter And Vice versa $"
+    dashLine db "----------------------------------------------------$"  
+    msg1 db "Enter a 8 bit hex or octal number $"
+    msg2 db "With a 'H' or 'O' at the end $"
+    msg3 db "Press ENTER to take another input after every result $"
     arr db ?  
-    num db ?    
+  
     i db ?
     j db ?
     ml db ?      
@@ -23,6 +28,34 @@ start:
     mov es, ax
 
     ; add your code here    
+    call printLine 
+    lea dx, msg0
+    mov ah, 09h
+    int 21h
+    call printLine
+    lea dx, dashLine
+    mov ah, 09h
+    int 21h
+    call printLine
+    call printLine
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+    call printLine
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+    call printLine
+    lea dx, msg3
+    mov ah, 09h
+    int 21h  
+    call printLine
+    lea dx, dashLine
+    mov ah, 09h
+    int 21h
+    
+    call printLine
+    call printLine
     
     mov cx, 0d
     takeInput:
@@ -152,10 +185,7 @@ start:
         
     convertOctToHex: 
         call printLine  
-        call printLine
-        ;lea dx, msg7
-        ;mov ah, 09h
-        ;int 21h
+        call printLine 
     
         mov bh, 0h
         mov bl, sum
@@ -163,7 +193,6 @@ start:
         mov ax, bx
         mov cx, ax
     
-    ;call printLine
     
         mov dl, 16d
         mov i, 0d
